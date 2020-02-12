@@ -19,6 +19,7 @@ describe("DropDownFilter", () => {
             filterBy: "attribute",
             isDefault: false
         } ],
+        multiselect: false,
         handleChange: jasmine.any(Function) as any
     };
 
@@ -56,6 +57,7 @@ describe("DropDownFilter", () => {
             const props: DropDownFilterProps = {
                 defaultFilterIndex: 1,
                 filters: [ filter ],
+                multiselect: false,
                 handleChange: jasmine.createSpy("onClick")
             };
             const wrapper = renderDropDownFilter(props);
@@ -91,6 +93,7 @@ describe("DropDownFilter", () => {
             const props: DropDownFilterProps = {
                 defaultFilterIndex: 1,
                 filters: [ filter, filterNew ],
+                multiselect: false,
                 handleChange: value => value
             };
             const spy = spyOn(props, "handleChange").and.callThrough();

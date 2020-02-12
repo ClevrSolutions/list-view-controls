@@ -9,6 +9,11 @@
             <category>General</category>
             <description>Select the same entity as the list view that this widget should interact with. If multiple list views with this entity are found, the closest is used</description>
         </property>
+        <property key="multiselect" type="boolean" defaultValue="false">
+            <caption>Allow multiselect</caption>
+            <category>General</category>
+            <description>Allow to select multiple filters which are combined with 'or' (not offline compatible)</description>
+        </property>
         <property key="filters" type="object" isList="true">
             <caption>Filter options</caption>
             <category>General</category>

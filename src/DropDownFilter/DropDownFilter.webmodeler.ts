@@ -30,12 +30,13 @@ export class preview extends Component<ContainerProps> {
     }
 
     private renderDropDownFilter(): ReactNode {
-        const { filters } = this.props;
+        const { filters, multiselect } = this.props;
         const defaultFilterIndex = filters.indexOf(filters.filter(value => value.isDefault)[0]);
 
         return createElement(DropDownFilter, {
             defaultFilterIndex,
             filters: this.props.filters,
+            multiselect,
             handleChange: () => { return; }
         });
     }
