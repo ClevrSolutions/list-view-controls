@@ -1,5 +1,5 @@
 {
-  "name": "list-view-controls",
+  "name": "clevr-list-view-controls",
   "widgetName": "CLEVRListViewControls",
   "version": "1.0.0",
   "description": "Search and filter Mendix list views",
