@@ -106,6 +106,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "classnames": "^2.2.6"
+    "classnames": "^2.2.6",
+    "multiselect-react-dropdown": "^1.6.11"
   }
 }

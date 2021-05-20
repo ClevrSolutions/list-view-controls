@@ -15,6 +15,8 @@ import "../ui/CLEVRDropDownFilter.scss";
 export interface ContainerProps extends WrapperProps {
     entity: string;
     filters: FilterProps[];
+    multiselect: boolean;
+    multiselectPlaceholder: string;
 }
 
 export interface FilterProps {
@@ -23,6 +25,7 @@ export interface FilterProps {
     attribute: string;
     attributeValue: string;
     constraint: string;
+    referenceConstraint: string;
     isDefault: boolean;
 }
 
@@ -120,14 +123,20 @@ export default class DropDownFilterContainer extends Component<ContainerProps, C
             const selectedCaption = this.state.selectedOption && this.state.selectedOption.caption;
             const defaultFilterIndex = this.props.filters.map(value => value.caption).indexOf(selectedCaption);
             const filters: FilterProps[] = JSON.parse(JSON.stringify(this.props.filters));
+            const multiselect = this.props.multiselect;
+            const multiselectPlaceholder = this.props.multiselectPlaceholder;
+
             if (this.props.mxObject) {
-                filters.forEach(filter => filter.constraint = filter.constraint.replace(/\[%CurrentObject%\]/g,
-                    this.props.mxObject.getGuid()
-                ));
+                filters.forEach(filter => {
+                    filter.constraint = filter.constraint.replace(/\[%CurrentObject%\]/g, this.props.mxObject.getGuid());
+                    filter.referenceConstraint = filter.referenceConstraint.replace(/\[%CurrentObject%\]/g, this.props.mxObject.getGuid());
+                });
             }
             return createElement(DropDownFilter, {
                 defaultFilterIndex,
                 filters,
+                multiselect,
+                multiselectPlaceholder,
                 handleChange: this.applyFilter
             });
         }
@@ -140,18 +149,46 @@ export default class DropDownFilterContainer extends Component<ContainerProps, C
     }
 
     private getInitialStateSelectedOption(): FilterProps {
-        const defaultFilter = this.props.filters.filter(value => value.isDefault)[0] || this.props.filters[0];
+        if (this.props.multiselect) {
+            const defaultFilter = this.props.filters.filter(value => value.isDefault)[0] ||
+            // Use filter none for multiselect default filter is no default is set
+            { filterBy: "none", caption: "", attribute: "", attributeValue: "", constraint: "", referenceConstraint: "", isDefault: false };
 
-        return this.viewStateManager.getPageState("selectedOption", defaultFilter);
+            return this.viewStateManager.getPageState("selectedOption", defaultFilter);
+        } else {
+            const defaultFilter = this.props.filters.filter(value => value.isDefault)[0] || this.props.filters[0];
+
+            return this.viewStateManager.getPageState("selectedOption", defaultFilter);
+        }
     }
 
-    private applyFilter(selectedFilter: FilterProps, restoreState = false) {
-        const constraint = this.getConstraint(selectedFilter);
-        if (this.dataSourceHelper) {
-            logger.debug(this.props, this.props.uniqueid, "applyFilter", constraint);
-            this.dataSourceHelper.setConstraint(this.props.uniqueid, constraint, undefined, restoreState);
+    private applyFilter(selectedFilter: FilterProps | FilterProps[], restoreState = false) {
+        if (Array.isArray(selectedFilter)) {
+            const constraint = "[" +
+            selectedFilter
+            .map(filter => this.getConstraint(filter))
+            .map(sc => {
+                if (typeof sc === "string") {
+                    const first = sc.indexOf("[");
+                    const last = sc.lastIndexOf("]");
+                    return "(" + sc.substring(first + 1, last) + ")";
+                } else {
+                    return "";
+                }
+            })
+            .join(" or ") + "]";
+            if (this.dataSourceHelper) {
+                logger.debug(this.props.uniqueid, "applyFilter", constraint);
+                this.dataSourceHelper.setConstraint(this.props.uniqueid, constraint, undefined, restoreState);
+            }
+        } else {
+            const constraint = this.getConstraint(selectedFilter);
+            if (this.dataSourceHelper) {
+                logger.debug(this.props.uniqueid, "applyFilter", constraint);
+                this.dataSourceHelper.setConstraint(this.props.uniqueid, constraint, undefined, restoreState);
+            }
+            this.setState({ selectedOption: selectedFilter });
         }
-        this.setState({ selectedOption: selectedFilter });
     }
 
     private getConstraint(selectedFilter: FilterProps): string | mendix.lib.dataSource.OfflineConstraint {

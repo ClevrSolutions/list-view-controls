@@ -16,9 +16,12 @@ describe("DropDownFilter", () => {
             attributeValue: "256",
             caption: "Country",
             constraint: "",
+            referenceConstraint: "",
             filterBy: "attribute",
             isDefault: false
         } ],
+        multiselect: false,
+        multiselectPlaceholder: "Select",
         handleChange: jasmine.any(Function) as any
     };
 
@@ -50,12 +53,15 @@ describe("DropDownFilter", () => {
                 attributeValue: "256",
                 caption: "Country",
                 constraint: "",
+                referenceConstraint: "",
                 filterBy: "attribute",
                 isDefault: false
             };
             const props: DropDownFilterProps = {
                 defaultFilterIndex: 1,
                 filters: [ filter ],
+                multiselect: false,
+                multiselectPlaceholder: "Select",
                 handleChange: jasmine.createSpy("onClick")
             };
             const wrapper = renderDropDownFilter(props);
@@ -77,6 +83,7 @@ describe("DropDownFilter", () => {
                 attributeValue: "256",
                 caption: "Country",
                 constraint: "",
+                referenceConstraint: "",
                 filterBy: "attribute",
                 isDefault: false
             };
@@ -85,12 +92,15 @@ describe("DropDownFilter", () => {
                 attributeValue: "258",
                 caption: "Country",
                 constraint: "",
+                referenceConstraint: "",
                 filterBy: "attribute",
                 isDefault: false
             };
             const props: DropDownFilterProps = {
                 defaultFilterIndex: 1,
                 filters: [ filter, filterNew ],
+                multiselect: false,
+                multiselectPlaceholder: "Select",
                 handleChange: value => value
             };
             const spy = spyOn(props, "handleChange").and.callThrough();
