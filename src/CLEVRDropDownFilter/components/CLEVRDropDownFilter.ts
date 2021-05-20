@@ -1,6 +1,6 @@
 import { ChangeEvent, Component, ReactNode, createElement } from "react";
 
-import { FilterProps } from "./DropDownFilterContainer";
+import { FilterProps } from "./CLEVRDropDownFilterContainer";
 
 export interface DropDownFilterProps {
     defaultFilterIndex: number;

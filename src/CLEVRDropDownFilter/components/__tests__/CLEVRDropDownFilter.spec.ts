@@ -2,8 +2,8 @@ import { createElement } from "react";
 import { configure, shallow } from "enzyme";
 import Adapter = require("enzyme-adapter-react-16");
 
-import { DropDownFilter, DropDownFilterProps } from "../DropDownFilter";
-import { FilterProps } from "../DropDownFilterContainer";
+import { DropDownFilter, DropDownFilterProps } from "../CLEVRDropDownFilter";
+import { FilterProps } from "../CLEVRDropDownFilterContainer";
 
 configure({ adapter: new Adapter() });
 

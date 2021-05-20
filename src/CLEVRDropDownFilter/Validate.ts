@@ -1,5 +1,5 @@
 import { ReactChild, createElement } from "react";
-import { ContainerProps } from "./components/DropDownFilterContainer";
+import { ContainerProps } from "./components/CLEVRDropDownFilterContainer";
 
 export class Validate {
     static validateProps(props: ContainerProps & { isWebModeler?: boolean }): ReactChild {

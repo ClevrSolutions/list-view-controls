@@ -1,6 +1,6 @@
 {
   "name": "list-view-controls",
-  "widgetName": "ListViewControls",
+  "widgetName": "CLEVRListViewControls",
   "version": "1.3.11",
   "description": "Search and filter Mendix list views",
   "copyright": "Mendix BV",
@@ -33,12 +33,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mendixlabs/list-view-controls"
+    "url": "https://github.com/ClevrSolutions/list-view-controls/tree/multiselectReference"
   },
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/mendixlabs/list-view-controls/issues"
-  },
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/core-js": "^2.5.2",

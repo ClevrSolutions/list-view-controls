@@ -6,11 +6,11 @@ import { DataSourceHelper, DataSourceHelperListView } from "../../Shared/DataSou
 import { SharedUtils, WrapperProps } from "../../Shared/SharedUtils";
 import { Validate } from "../Validate";
 
-import { DropDownFilter } from "./DropDownFilter";
+import { DropDownFilter } from "./CLEVRDropDownFilter";
 import { SharedContainerUtils } from "../../Shared/SharedContainerUtils";
 import { FormViewState } from "../../Shared/FormViewState";
 
-import "../ui/DropDownFilter.scss";
+import "../ui/CLEVRDropDownFilter.scss";
 
 export interface ContainerProps extends WrapperProps {
     entity: string;

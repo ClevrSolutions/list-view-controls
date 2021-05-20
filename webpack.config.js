@@ -12,12 +12,12 @@ const developmentPort = process.env.npm_package_config_developmentPort || "3000"
 
 const widgetConfig = {
     entry: {
-        CheckBoxFilter: "./src/CheckBoxFilter/components/CheckBoxFilterContainer.ts",
-        DropDownFilter: "./src/DropDownFilter/components/DropDownFilterContainer.ts",
-        DropDownSort: "./src/DropDownSort/components/DropDownSortContainer.ts",
-        TextBoxSearch: "./src/TextBoxSearch/components/TextBoxSearchContainer.ts",
-        Pagination: "./src/Pagination/components/PaginationContainer.ts",
-        HeaderSort: "./src/HeaderSort/components/HeaderSortContainer.ts"
+//        CheckBoxFilter: "./src/CheckBoxFilter/components/CheckBoxFilterContainer.ts",
+        CLEVRDropDownFilter: "./src/CLEVRDropDownFilter/components/CLEVRDropDownFilterContainer.ts"
+//        DropDownSort: "./src/DropDownSort/components/DropDownSortContainer.ts",
+//        TextBoxSearch: "./src/TextBoxSearch/components/TextBoxSearchContainer.ts",
+//        Pagination: "./src/Pagination/components/PaginationContainer.ts",
+//        HeaderSort: "./src/HeaderSort/components/HeaderSortContainer.ts"
     },
     output: {
         path: path.resolve(__dirname, "dist/tmp"),
@@ -102,12 +102,12 @@ const widgetConfig = {
 
 const previewConfig = {
     entry: {
-        CheckBoxFilter: "./src/CheckBoxFilter/CheckBoxFilter.webmodeler.ts",
-        DropDownFilter: "./src/DropDownFilter/DropDownFilter.webmodeler.ts",
-        DropDownSort: "./src/DropDownSort/DropDownSort.webmodeler.ts",
-        TextBoxSearch: "./src/TextBoxSearch/TextBoxSearch.webmodeler.ts",
-        Pagination: "./src/Pagination/Pagination.webmodeler.ts",
-        HeaderSort: "./src/HeaderSort/HeaderSort.webmodeler.ts"
+//        CheckBoxFilter: "./src/CheckBoxFilter/CheckBoxFilter.webmodeler.ts",
+        CLEVRDropDownFilter: "./src/CLEVRDropDownFilter/CLEVRDropDownFilter.webmodeler.ts"
+//        DropDownSort: "./src/CLEVRDropDownSort/CLEVRDropDownSort.webmodeler.ts",
+//        TextBoxSearch: "./src/TextBoxSearch/TextBoxSearch.webmodeler.ts",
+//        Pagination: "./src/Pagination/Pagination.webmodeler.ts",
+//        HeaderSort: "./src/HeaderSort/HeaderSort.webmodeler.ts"
     },
     output: {
         path: path.resolve(__dirname, "dist/tmp"),

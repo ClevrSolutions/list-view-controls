@@ -5,8 +5,8 @@ import { Alert } from "../Shared/components/Alert";
 import { SharedUtils } from "../Shared/SharedUtils";
 import { Validate } from "./Validate";
 
-import { DropDownFilter } from "./components/DropDownFilter";
-import { ContainerProps } from "./components/DropDownFilterContainer";
+import { DropDownFilter } from "./components/CLEVRDropDownFilter";
+import { ContainerProps } from "./components/CLEVRDropDownFilterContainer";
 
 // tslint:disable-next-line class-name
 export class preview extends Component<ContainerProps> {

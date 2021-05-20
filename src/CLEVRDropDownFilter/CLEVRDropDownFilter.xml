@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget id="com.mendix.widget.custom.listviewcontrols.DropDownFilter" offlineCapable="true" needsEntityContext="false" xmlns="http://www.mendix.com/widget/1.0/">
-    <name>Drop down filter</name>
+<widget id="com.mendix.widget.custom.clevrlistviewcontrols.CLEVRDropDownFilter" offlineCapable="true" needsEntityContext="false" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>CLEVR Drop down filter</name>
     <description>Filter Mendix list views using a drop-down</description>
     <icon>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAt1BMVEUAAACAgICAgIBVVVVVVVVNs/9dXV1iYmJVVVVgYGBeXl5VVVVYWFhVVVVZWVlJsPlVVVVXV1dVVVVWVlZYWFhWVlZVVVVWVlZWVlZVVVVXV1dWVlZKsvdXV1dVVVVWVlZVVVVWVlZWVlZVVVVJsfdWVlZWVlZVVVVWVlZVVVVWVlZVVVVJsfhVVVVVVVVVVVVWVlZVVVVWVlZVVVVWVlZVVVVJsfhVVVVVVVVWVlZVVVVIsPdVVVXLdR74AAAAO3RSTlMAAgQGCQoLDQ8QExgdJCgqLTU5O0NERUpNTlJTYGR+gIeLkZmgo6q0u8vQ1NXX2Nvc3eLm6Oz1+fv9/oAKbYIAAAE3SURBVHgB7ZVtU7JQEIbvR8WntPJFSwtMU5Q0VNR8kfj/v6tlls5M43oG+MQ05/oAu2fZa4b7y0GxMBgMhvYyusKyDeJpLc3Wj0og77MBxEaebZQg0gAikEdBasFAHg1+CSCgzj0qjk0omkc68JBeUN9TtSgjobygdl/PIIAdlyMkjOLORhYBplSeO1x3ztRMkU1wu41jr4KoBlRubzIK0A2pmYCYUBF2xQ/dL4V7IR7HXQ/oxe8xRIHl/+z71oWgsqJuV6vt6LWqyAI0Drx/aAi/1jpRO5vR49S6+q8OCxwxm2GUMNSE5XIAoqA05/15SSOwfA5AEsBmwQs0AoqBA5AEfRb0tQI4DvILmL8seC6IIHwQP5SRBG/IK+AQvX9QpLxYFPd08PE/x9WmeP18v4PBYDAUlW8TxaSIMaYQAgAAAABJRU5ErkJggg==</icon>
     <properties>
