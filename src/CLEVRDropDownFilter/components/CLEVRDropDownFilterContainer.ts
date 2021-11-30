@@ -178,13 +178,13 @@ export default class DropDownFilterContainer extends Component<ContainerProps, C
             })
             .join(" or ") + "]";
             if (this.dataSourceHelper) {
-                logger.debug(this.props.uniqueid, "applyFilter", constraint);
+                mx.logger.debug(this.props.uniqueid, "applyFilter", constraint);
                 this.dataSourceHelper.setConstraint(this.props.uniqueid, constraint, undefined, restoreState);
             }
         } else {
             const constraint = this.getConstraint(selectedFilter);
             if (this.dataSourceHelper) {
-                logger.debug(this.props.uniqueid, "applyFilter", constraint);
+                mx.logger.debug(this.props.uniqueid, "applyFilter", constraint);
                 this.dataSourceHelper.setConstraint(this.props.uniqueid, constraint, undefined, restoreState);
             }
             this.setState({ selectedOption: selectedFilter });

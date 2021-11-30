@@ -1,4 +1,5 @@
 import { DataSourceHelperListView, Paging } from "./DataSourceHelper/DataSourceHelper";
+import { v4 as uuid } from "uuid";
 
 // Originally the the list view controls always reset the offset to 0 and remove the filtering and sorting
 // To optimize the network call we need to overwrite this behavior when filtering and sorting is set on a list view
@@ -13,7 +14,7 @@ import { DataSourceHelperListView, Paging } from "./DataSourceHelper/DataSourceH
         ListView.prototype.__lvcPrototypeUpdated = true;
         ListView.prototype.__postCreateOriginal = ListView.prototype.postCreate;
         ListView.prototype.postCreate = function(this: DataSourceHelperListView) {
-            logger.debug("list view control, overwrites postCreate prototype");
+            mx.logger.debug("list view control, overwrites postCreate prototype");
             this.__postCreateOriginal();
             if (!listviewInstanceCompatible(this)) return;
 
@@ -40,16 +41,26 @@ import { DataSourceHelperListView, Paging } from "./DataSourceHelper/DataSourceH
 
         ListView.prototype.__loadDataOriginal = ListView.prototype._loadData;
         ListView.prototype._loadData = function(this: DataSourceHelperListView, callback: () => void) {
-            logger.debug("List view control, overwrites _loadData prototype");
+            mx.logger.debug("List view control, overwrites _loadData prototype");
             if (!listviewInstanceCompatible(this)) {
                 this.__loadDataOriginal(callback);
                 return;
             }
+            const loadId = this._lastLoadId = uuid();
+
             if (this.__lvcPagingEnabled) {
                 // Prevent default behavior to reset of offset
                 this._datasource.setOffset(0);
             }
             this._datasource.reload(() => {
+                // Applying logic to avoid wrong rendering of elements
+                if (this._lastLoadId !== loadId) {
+                    if (callback) {
+                        callback();
+                    }
+                    return;
+                }
+
                 const offset = this._datasource.getOffset();
                 if (offset && this._datasource.getSetSize() <= offset) {
                     // When data set is filtered/restored and an offset page shows with no items,
@@ -67,7 +78,7 @@ import { DataSourceHelperListView, Paging } from "./DataSourceHelper/DataSourceH
             });
         };
     } else {
-        logger.debug("Prototype update called unexpected again");
+        mx.logger.debug("Prototype update called unexpected again");
     }
 
     function listviewPrototypeCompatible(listview: DataSourceHelperListView) {
@@ -79,7 +90,7 @@ import { DataSourceHelperListView, Paging } from "./DataSourceHelper/DataSourceH
             && listview._renderData
         );
         if (!compatible) {
-            logger.error("This Mendix version is not compatible with list view controls. The List view prototype could not be updated.");
+            mx.logger.error("This Mendix version is not compatible with list view controls. The List view prototype could not be updated.");
         }
         return compatible;
     }
@@ -102,7 +113,7 @@ import { DataSourceHelperListView, Paging } from "./DataSourceHelper/DataSourceH
             && listview._datasource.getOffset
         );
         if (!compatible) {
-            logger.error("This Mendix version is not compatible with list view controls. The List view controls use is limited.");
+            mx.logger.error("This Mendix version is not compatible with list view controls. The List view controls use is limited.");
         }
         return compatible;
     }
