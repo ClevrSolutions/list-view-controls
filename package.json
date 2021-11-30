@@ -117,7 +117,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "multiselect-react-dropdown": "^1.6.11"
+    "multiselect-react-dropdown": "^1.6.11",
     "uuid": "^8.3.2"
   }
 }
