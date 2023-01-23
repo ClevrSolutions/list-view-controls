@@ -38,7 +38,8 @@ export class preview extends Component<ContainerProps> {
             filters: this.props.filters,
             multiselect,
             multiselectPlaceholder,
-            handleChange: () => { return; }
+            handleChange: () => { return; },
+            ctxObject: this.props.mxObject
         });
     }
 }

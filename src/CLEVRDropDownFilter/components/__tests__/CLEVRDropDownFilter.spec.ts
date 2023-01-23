@@ -22,7 +22,8 @@ describe("DropDownFilter", () => {
         } ],
         multiselect: false,
         multiselectPlaceholder: "Select",
-        handleChange: jasmine.any(Function) as any
+        handleChange: jasmine.any(Function) as any,
+        ctxObject: null
     };
 
     const createOptions = (props: DropDownFilterProps) => {
@@ -62,7 +63,8 @@ describe("DropDownFilter", () => {
                 filters: [ filter ],
                 multiselect: false,
                 multiselectPlaceholder: "Select",
-                handleChange: jasmine.createSpy("onClick")
+                handleChange: jasmine.createSpy("onClick"),
+                ctxObject: null
             };
             const wrapper = renderDropDownFilter(props);
             const select: any = wrapper.find("select");
@@ -101,7 +103,8 @@ describe("DropDownFilter", () => {
                 filters: [ filter, filterNew ],
                 multiselect: false,
                 multiselectPlaceholder: "Select",
-                handleChange: value => value
+                handleChange: value => value,
+                ctxObject: null
             };
             const spy = spyOn(props, "handleChange").and.callThrough();
             const wrapper = renderDropDownFilter(props);

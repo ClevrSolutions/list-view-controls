@@ -9,6 +9,7 @@ export interface DropDownFilterProps {
     multiselect: boolean;
     multiselectPlaceholder: string;
     handleChange: (FilterProps: FilterProps | FilterProps[]) => void;
+    ctxObject: mendix.lib.MxObject | null;
 }
 
 interface SingleFilterState {
@@ -106,7 +107,7 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
 
             // Get dynamic filter values
             if (window.mx && window.mx.data) {
-                const mxData = window.mx.data;
+                const mxData = window.mx.data; 
 
                 // Iterate through the pre-defined filter options and find the ones of type attribute with value *
                 // For these, we'll load the attribute values and add them as dynamic filter options.
@@ -122,7 +123,12 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                         path = path.substring(0, path.lastIndexOf("/"));
 
                         const constraint = filter.referenceConstraint || "";
-                        const xpath = "//" + path.substring(path.lastIndexOf("/") + 1) + constraint;
+                        let xpath = "//" + path.substring(path.lastIndexOf("/") + 1) + constraint;
+
+                        const mxObjectId = this.props.ctxObject ? this.props.ctxObject.getGuid() : "";
+                        if (mxObjectId) {
+                            xpath = xpath.replace(/\[%CurrentObject%\]/g, mxObjectId);
+                        }
 
                         const refpath = path.substring(0, path.indexOf("/"));
 

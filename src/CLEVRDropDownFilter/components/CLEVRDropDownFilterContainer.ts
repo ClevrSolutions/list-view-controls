@@ -132,12 +132,19 @@ export default class DropDownFilterContainer extends Component<ContainerProps, C
                     filter.referenceConstraint = filter.referenceConstraint.replace(/\[%CurrentObject%\]/g, this.props.mxObject.getGuid());
                 });
             }
+
+            const requiresContext = filters.find( f => f.referenceConstraint.indexOf(`'[%CurrentObject%]'`) !== -1) != null;
+
+            if (requiresContext && this.props.mxObject==null) {
+                return null;
+            }
             return createElement(DropDownFilter, {
                 defaultFilterIndex,
                 filters,
                 multiselect,
                 multiselectPlaceholder,
-                handleChange: this.applyFilter
+                handleChange: this.applyFilter,
+                ctxObject: this.props.mxObject
             });
         }
 
