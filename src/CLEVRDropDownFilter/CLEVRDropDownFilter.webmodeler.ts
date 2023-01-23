@@ -30,7 +30,7 @@ export class preview extends Component<ContainerProps> {
     }
 
     private renderDropDownFilter(): ReactNode {
-        const { filters, multiselect, multiselectPlaceholder } = this.props;
+        const { filters, multiselect, multiselectPlaceholder, sortOptions } = this.props;
         const defaultFilterIndex = filters.indexOf(filters.filter(value => value.isDefault)[0]);
 
         return createElement(DropDownFilter, {
@@ -39,7 +39,8 @@ export class preview extends Component<ContainerProps> {
             multiselect,
             multiselectPlaceholder,
             handleChange: () => { return; },
-            ctxObject: this.props.mxObject
+            ctxObject: this.props.mxObject,
+            sortOptions
         });
     }
 }

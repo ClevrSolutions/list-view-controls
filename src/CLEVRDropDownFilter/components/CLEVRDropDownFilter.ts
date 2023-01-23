@@ -10,6 +10,7 @@ export interface DropDownFilterProps {
     multiselectPlaceholder: string;
     handleChange: (FilterProps: FilterProps | FilterProps[]) => void;
     ctxObject: mendix.lib.MxObject | null;
+    sortOptions: sortOptionsOpt;
 }
 
 interface SingleFilterState {
@@ -19,6 +20,8 @@ interface SingleFilterState {
 interface DropDownFilterState extends SingleFilterState {
     selectedValueMulti: string[];
 }
+
+type sortOptionsOpt = "no" | "asc" | "desc";
 
 type Display = Partial<FilterProps> & SingleFilterState;
 
@@ -47,7 +50,7 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
         });
 
         const propFilters = JSON.parse(JSON.stringify(this.props.filters));
-
+        const sortOptions = this.props.sortOptions;
         // Filter out options that were just placeholders, then create the pre-defined options.
         this.filters = propFilters.filter((filter: object, index: number) => {
             if (filter) {
@@ -60,8 +63,17 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
             return (
                 {
                 ...filter,
-                selectedValue: `${index}`
+                selectedValue: `${index}`,
+                index: index
             });
+        }).sort( (a: any,b: any) => {
+            if (sortOptions==="asc") {
+                return a.caption.localeCompare(b.caption);
+            } else if (sortOptions==="desc") {
+                return b.caption.localeCompare(a.caption);
+            } else {
+                return a.index < b.index;
+            }
         });
 
         this.createDynamicOptions();
@@ -132,6 +144,8 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
 
                         const refpath = path.substring(0, path.indexOf("/"));
 
+                        const sortOptions = this.props.sortOptions;
+
                         // Query Mendix for the data
                         promises.push(new Promise(resolveGet => {
                             mxData.get({
@@ -154,6 +168,12 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                                             dynamicFilters.push(dynamicFilter);
                                         }
                                     });
+
+                                    if (sortOptions=="asc") {
+                                        dynamicFilters.sort( (a: any, b: any) => a.caption.localeCompare(b.caption) );
+                                    } else if (sortOptions=="desc") {
+                                        dynamicFilters.sort( (a: any, b: any) => b.caption.localeCompare(a.caption) );
+                                    }
 
                                     resolveGet(true);
                                 }

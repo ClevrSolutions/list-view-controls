@@ -79,5 +79,15 @@
                 </property>
             </properties>
         </property>
+       	<property key="sortOptions" type="enumeration" defaultValue="no">
+    		<caption>Sort available options</caption>
+            <category>General</category>
+    		<description>apply sorting on dynamic options</description>
+    		<enumerationValues>
+	    		<enumerationValue key="no">No</enumerationValue>
+	    		<enumerationValue key="asc">Asc.</enumerationValue>
+	    		<enumerationValue key="desc">Desc.</enumerationValue>
+	    	</enumerationValues>
+	    </property>
     </properties>
 </widget>
