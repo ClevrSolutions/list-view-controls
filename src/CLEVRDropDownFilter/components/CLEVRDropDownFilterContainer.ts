@@ -17,7 +17,7 @@ export interface ContainerProps extends WrapperProps {
     filters: FilterProps[];
     multiselect: boolean;
     multiselectPlaceholder: string;
-    sortOptions: sortOptionsOpt;
+    sortOptions: SortOptionsOpt;
 }
 
 export interface FilterProps {
@@ -32,7 +32,7 @@ export interface FilterProps {
 
 export type filterOptions = "none" | "attribute" | "XPath";
 
-export type sortOptionsOpt = "no" | "asc" | "desc";
+export type SortOptionsOpt = "no" | "asc" | "desc";
 
 export interface ContainerState {
     alertMessage?: ReactChild;
@@ -126,9 +126,6 @@ export default class DropDownFilterContainer extends Component<ContainerProps, C
             const selectedCaption = this.state.selectedOption && this.state.selectedOption.caption;
             const defaultFilterIndex = this.props.filters.map(value => value.caption).indexOf(selectedCaption);
             const filters: FilterProps[] = JSON.parse(JSON.stringify(this.props.filters));
-            const multiselect = this.props.multiselect;
-            const multiselectPlaceholder = this.props.multiselectPlaceholder;
-            const sortOptions = this.props.sortOptions;
 
             if (this.props.mxObject) {
                 filters.forEach(filter => {
@@ -145,11 +142,11 @@ export default class DropDownFilterContainer extends Component<ContainerProps, C
             return createElement(DropDownFilter, {
                 defaultFilterIndex,
                 filters,
-                multiselect,
-                multiselectPlaceholder,
+                multiselect: this.props.multiselect,
+                multiselectPlaceholder: this.props.multiselectPlaceholder,
                 handleChange: this.applyFilter,
                 ctxObject: this.props.mxObject,
-                sortOptions,
+                sortOptions: this.props.sortOptions,
             });
         }
 

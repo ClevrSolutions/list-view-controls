@@ -1,6 +1,6 @@
 import { ChangeEvent, Component, ReactNode, createElement } from "react";
 
-import { FilterProps } from "./CLEVRDropDownFilterContainer";
+import { FilterProps, SortOptionsOpt } from "./CLEVRDropDownFilterContainer";
 import { Multiselect } from "multiselect-react-dropdown";
 
 export interface DropDownFilterProps {
@@ -10,7 +10,7 @@ export interface DropDownFilterProps {
     multiselectPlaceholder: string;
     handleChange: (FilterProps: FilterProps | FilterProps[]) => void;
     ctxObject: mendix.lib.MxObject | null;
-    sortOptions: sortOptionsOpt;
+    sortOptions: SortOptionsOpt;
 }
 
 interface SingleFilterState {
@@ -20,8 +20,6 @@ interface SingleFilterState {
 interface DropDownFilterState extends SingleFilterState {
     selectedValueMulti: string[];
 }
-
-type sortOptionsOpt = "no" | "asc" | "desc";
 
 type Display = Partial<FilterProps> & SingleFilterState;
 
@@ -40,23 +38,10 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleMultiselectOnChange = this.handleMultiselectOnChange.bind(this);
 
-        const rmIndices: number[] = [];
-
-        this.props.filters.forEach((filter, index) => {
-            if (filter.filterBy === "attribute" && filter.attributeValue === "*") {
-                // Save the current option index, so we remove this option later, as it is just a placeholder.
-                rmIndices.push(index);
-            }
-        });
-
         const propFilters = JSON.parse(JSON.stringify(this.props.filters));
-        const sortOptions = this.props.sortOptions;
         // Filter out options that were just placeholders, then create the pre-defined options.
-        this.filters = propFilters.filter((filter: object, index: number) => {
-            if (filter) {
-                return rmIndices.indexOf(index) === -1;
-            }
-            return false;
+        this.filters = propFilters.filter((filter: any) => {
+            return filter && (!(filter.filterBy === "attribute" && filter.attributeValue === "*"))
         })
         .map((filter: object, index: number) => {
             this.index = index;
@@ -64,27 +49,27 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                 {
                 ...filter,
                 selectedValue: `${index}`,
-                index: index
             });
-        }).sort( (a: any,b: any) => {
-            if (sortOptions==="asc") {
-                return a.caption.localeCompare(b.caption);
-            } else if (sortOptions==="desc") {
-                return b.caption.localeCompare(a.caption);
-            } else {
-                return a.index < b.index;
-            }
         });
 
         this.createDynamicOptions();
     }
 
     render() {
+        let filterList = this.filters;
+        
+        // If sorting is enabled, sort all entries for rendering
+        if (this.props.sortOptions==="asc") {
+            filterList.sort((a: any,b: any) => a.caption.localeCompare(b.caption));
+        } else if (this.props.sortOptions==="desc") {
+            filterList.sort((a: any,b: any) => b.caption.localeCompare(a.caption));
+        }
+
         if (this.props.multiselect === true) {
             const placeholder = this.props.multiselectPlaceholder || "Select";
             return createElement(Multiselect,
                 {
-                    options: this.filters,
+                    options: filterList,
                     onSelect: this.handleMultiselectOnChange,
                     onRemove: this.handleMultiselectOnChange,
                     selectedvalues: this.state.selectedValue,
@@ -99,7 +84,7 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                     onChange: this.handleOnChange,
                     value: this.state.selectedValue
                 },
-                this.createOptions()
+                this.createOptions(filterList)
             );
         }
     }
@@ -144,8 +129,6 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
 
                         const refpath = path.substring(0, path.indexOf("/"));
 
-                        const sortOptions = this.props.sortOptions;
-
                         // Query Mendix for the data
                         promises.push(new Promise(resolveGet => {
                             mxData.get({
@@ -168,12 +151,6 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                                             dynamicFilters.push(dynamicFilter);
                                         }
                                     });
-
-                                    if (sortOptions=="asc") {
-                                        dynamicFilters.sort( (a: any, b: any) => a.caption.localeCompare(b.caption) );
-                                    } else if (sortOptions=="desc") {
-                                        dynamicFilters.sort( (a: any, b: any) => b.caption.localeCompare(a.caption) );
-                                    }
 
                                     resolveGet(true);
                                 }
@@ -204,8 +181,8 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
         });
     }
 
-    private createOptions(): ReactNode[] {
-        return this.filters.map((option, index) => createElement("option", {
+    private createOptions( filterList: Display[]): ReactNode[] {
+        return filterList.map((option, index) => createElement("option", {
             className: "",
             key: index,
             label: option.caption,
