@@ -1,4 +1,4 @@
-import { ChangeEvent, Component, ReactNode, createElement } from "react";
+import { ChangeEvent, Component, createElement } from "react";
 
 import { FilterProps, SortOptionsOpt } from "./CLEVRDropDownFilterContainer";
 import { Multiselect } from "multiselect-react-dropdown";
@@ -51,25 +51,16 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                 selectedValue: `${index}`,
             });
         });
-
+        this.sortFilters();
         this.createDynamicOptions();
     }
 
     render() {
-        let filterList = this.filters;
-        
-        // If sorting is enabled, sort all entries for rendering
-        if (this.props.sortOptions==="asc") {
-            filterList.sort((a: any,b: any) => a.caption.localeCompare(b.caption));
-        } else if (this.props.sortOptions==="desc") {
-            filterList.sort((a: any,b: any) => b.caption.localeCompare(a.caption));
-        }
-
         if (this.props.multiselect === true) {
             const placeholder = this.props.multiselectPlaceholder || "Select";
             return createElement(Multiselect,
                 {
-                    options: filterList,
+                    options: this.filters,
                     onSelect: this.handleMultiselectOnChange,
                     onRemove: this.handleMultiselectOnChange,
                     selectedvalues: this.state.selectedValue,
@@ -84,9 +75,18 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                     onChange: this.handleOnChange,
                     value: this.state.selectedValue
                 },
-                this.createOptions(filterList)
+                this.createOptions()
             );
         }
+    }
+
+    private sortFilters() {
+        // If sorting is enabled, sort all entries for rendering
+        if (this.props.sortOptions==="asc") {
+            this.filters.sort((a: any,b: any) => a.caption.localeCompare(b.caption));
+        } else if (this.props.sortOptions==="desc") {
+            this.filters.sort((a: any,b: any) => b.caption.localeCompare(a.caption));
+        }        
     }
 
     componentWillReceiveProps(newProps: DropDownFilterProps) {
@@ -174,6 +174,7 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
                         }
                     );
                 });
+                this.sortFilters();
 
                 this.componentWillReceiveProps(this.props);
                 resolve(true);
@@ -181,8 +182,8 @@ export class DropDownFilter extends Component<DropDownFilterProps, DropDownFilte
         });
     }
 
-    private createOptions( filterList: Display[]): ReactNode[] {
-        return filterList.map((option, index) => createElement("option", {
+    private createOptions() {
+        return this.filters.map((option, index) => createElement("option", {
             className: "",
             key: index,
             label: option.caption,
